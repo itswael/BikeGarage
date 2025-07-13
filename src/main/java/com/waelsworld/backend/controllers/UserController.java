@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserRepository userRepo;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         user.setId(null); // ensure new user
         return ResponseEntity.ok(userRepo.save(user));
@@ -24,5 +24,10 @@ public class UserController {
         return userRepo.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/")
+    public String actuallyWorks() {
+        return "Backend is running!";
     }
 }
