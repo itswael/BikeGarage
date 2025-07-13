@@ -2,13 +2,8 @@ package com.waelsworld.backend.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
-import com.waelsworld.backend.Role;
+import com.waelsworld.backend.models.enums.Role;
 
 @Entity
 @Getter
@@ -16,26 +11,17 @@ import com.waelsworld.backend.Role;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(updatable = false, nullable = false)
-    private UUID id;
-
+public class User extends BaseEntity {
     private String name;
 
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(unique = true, nullable = false)
     private String phone;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 }
 
