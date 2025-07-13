@@ -8,15 +8,19 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
+
+import com.waelsworld.backend.Role;
 
 @Entity
 @Data
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     private String name;
 
@@ -27,10 +31,6 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    public enum Role {
-        OWNER, CUSTOMER, MECHANIC
-    }
 
     @CreationTimestamp
     private LocalDateTime createdAt;
