@@ -5,6 +5,8 @@ import lombok.*;
 
 import com.waelsworld.backend.models.enums.Role;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -22,6 +24,9 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vehicle> vehicles;
 
 }
 
