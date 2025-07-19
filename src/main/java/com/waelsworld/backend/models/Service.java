@@ -1,5 +1,6 @@
 package com.waelsworld.backend.models;
 
+import com.waelsworld.backend.models.enums.ServiceStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
