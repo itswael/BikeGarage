@@ -34,4 +34,8 @@ public class Invoice extends BaseEntity{
     InvoiceStatus status;
 
     UUID paymentId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_id")
+    Service service;
 }
