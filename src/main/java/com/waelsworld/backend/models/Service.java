@@ -25,11 +25,15 @@ public class Service extends BaseEntity {
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
     List<WorkLog> workLogs;
 
-    @NonNull
+    @OneToOne(mappedBy = "service", cascade = CascadeType.ALL)
     Invoice invoice;
 
     UUID customerId;
 
-    UUID MechanicId;
+    UUID mechanicId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    Vehicle vehicle;  // Link to the vehicle being serviced
 
 }
