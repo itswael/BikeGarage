@@ -1,6 +1,8 @@
 package com.waelsworld.backend.controllers;
 
 
+import com.waelsworld.backend.dtos.UserRequestDTO;
+import com.waelsworld.backend.dtos.UserResponseDTO;
 import com.waelsworld.backend.models.User;
 import com.waelsworld.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO user) {
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
