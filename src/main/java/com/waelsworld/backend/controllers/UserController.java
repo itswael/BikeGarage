@@ -20,7 +20,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO user) {
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
