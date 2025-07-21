@@ -1,5 +1,8 @@
 package com.waelsworld.backend.services;
 
+import com.waelsworld.backend.dtos.UserRequestDTO;
+import com.waelsworld.backend.dtos.UserResponseDTO;
+import com.waelsworld.backend.mapper.UserMapper;
 import com.waelsworld.backend.models.User;
 import com.waelsworld.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +18,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserResponseDTO createUser(UserRequestDTO request) {
+        User user = UserMapper.toUser(request);
+
+        User saved = userRepository.save(user);
+
+        return UserMapper.from(saved);
     }
 
     public Optional<User> getUserById(UUID id) {
