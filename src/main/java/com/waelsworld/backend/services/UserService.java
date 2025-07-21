@@ -6,6 +6,7 @@ import com.waelsworld.backend.mapper.UserMapper;
 import com.waelsworld.backend.models.User;
 import com.waelsworld.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,10 +18,12 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     public UserResponseDTO createUser(UserRequestDTO request) {
         User user = UserMapper.toUser(request);
-
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         User saved = userRepository.save(user);
 
         return UserMapper.from(saved);
