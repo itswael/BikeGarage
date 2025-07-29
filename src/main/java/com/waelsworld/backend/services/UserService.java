@@ -2,9 +2,12 @@ package com.waelsworld.backend.services;
 
 import com.waelsworld.backend.dtos.UserRequestDTO;
 import com.waelsworld.backend.dtos.UserResponseDTO;
+import com.waelsworld.backend.errors.userErrors;
+import com.waelsworld.backend.exceptions.DuplicateResourceException;
 import com.waelsworld.backend.mapper.UserMapper;
 import com.waelsworld.backend.models.User;
 import com.waelsworld.backend.repositories.UserRepository;
+import com.waelsworld.backend.utils.userUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,7 +25,20 @@ public class UserService {
 
 
     public UserResponseDTO createUser(UserRequestDTO request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new DuplicateResourceException(userErrors.EMAIL_ALREADY_EXISTS.getMessage());
+        }
+
+        if (!userUtils.validateUserData(request)) {
+            throw new IllegalArgumentException(userErrors.REQUIRED_FIELDS_MISSING.getMessage());
+        }
+
+        if (!userUtils.validatePassword(request.getPassword())) {
+            throw new IllegalArgumentException(userErrors.PASSWORD_TOO_SHORT.getMessage());
+        }
+
         User user = UserMapper.toUser(request);
+
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         User saved = userRepository.save(user);
 
