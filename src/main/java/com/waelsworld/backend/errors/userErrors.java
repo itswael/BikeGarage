@@ -15,7 +15,8 @@ public enum userErrors {
     USER_CREATION_FAILED("Failed to create user"),
     USER_UPDATE_FAILED("Failed to update user"),
     USER_DELETION_FAILED("Failed to delete user"),
-    INVALID_LOGIN_CREDENTIALS("Email or password is incorrect");
+    INVALID_LOGIN_CREDENTIALS("Email or password is incorrect"),
+    USERNAME_ALREADY_EXISTS("Username already exists");
 
     private final String message;
 }
