@@ -37,6 +37,10 @@ public class UserService {
             throw new IllegalArgumentException(userErrors.PASSWORD_TOO_SHORT.getMessage());
         }
 
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new DuplicateResourceException(userErrors.USERNAME_ALREADY_EXISTS.getMessage());
+        }
+
         User user = UserMapper.toUser(request);
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -55,6 +59,25 @@ public class UserService {
 
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
+    }
+
+    public UserResponseDTO loginUser(UserRequestDTO request) {
+        Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
+
+        if (userOpt.isEmpty()) {
+            throw new IllegalArgumentException(userErrors.USER_NOT_FOUND.getMessage());
+        }
+
+        if(!passwordEncoder.matches(request.getPassword(), userOpt.get().getPassword())) {
+            throw new IllegalArgumentException(userErrors.INVALID_LOGIN_CREDENTIALS.getMessage());
+        }
+
+        // user exists and password matches
+        // create a jwt token
+
+
+
+        return UserMapper.from(userOpt.get());
     }
 }
 
