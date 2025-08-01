@@ -10,12 +10,5 @@ public class UserResponseDTO {
     private String name;
     private String email;
     private String phone;
-
-    public UserResponseDTO from (User user) {
-        this.id = user.getId();
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.phone = user.getPhone();
-        return this;
-    }
+    private String username;
 }

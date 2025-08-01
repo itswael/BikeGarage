@@ -2,12 +2,18 @@ package com.waelsworld.backend.services;
 
 import com.waelsworld.backend.dtos.UserRequestDTO;
 import com.waelsworld.backend.dtos.UserResponseDTO;
+import com.waelsworld.backend.errors.userErrors;
+import com.waelsworld.backend.exceptions.DuplicateResourceException;
 import com.waelsworld.backend.mapper.UserMapper;
 import com.waelsworld.backend.models.User;
 import com.waelsworld.backend.repositories.UserRepository;
+import com.waelsworld.backend.utils.userUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -15,14 +21,31 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
 
     public UserResponseDTO createUser(UserRequestDTO request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new DuplicateResourceException(userErrors.EMAIL_ALREADY_EXISTS.getMessage());
+        }
+
+        if (!userUtils.validateUserData(request)) {
+            throw new IllegalArgumentException(userErrors.REQUIRED_FIELDS_MISSING.getMessage());
+        }
+
+        if (!userUtils.validatePassword(request.getPassword())) {
+            throw new IllegalArgumentException(userErrors.PASSWORD_TOO_SHORT.getMessage());
+        }
+
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new DuplicateResourceException(userErrors.USERNAME_ALREADY_EXISTS.getMessage());
+        }
+
         User user = UserMapper.toUser(request);
+
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         User saved = userRepository.save(user);
 
@@ -39,6 +62,31 @@ public class UserService {
 
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
+    }
+
+    public UserResponseDTO loginUser(UserRequestDTO request) {
+        Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
+
+        if (userOpt.isEmpty()) {
+            throw new IllegalArgumentException(userErrors.USER_NOT_FOUND.getMessage());
+        }
+
+        if(!passwordEncoder.matches(request.getPassword(), userOpt.get().getPassword())) {
+            throw new IllegalArgumentException(userErrors.INVALID_LOGIN_CREDENTIALS.getMessage());
+        }
+
+        // user exists and password matches
+        // create a jwt token
+
+
+
+        return UserMapper.from(userOpt.get());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
 
