@@ -13,6 +13,7 @@ public class UserMapper {
         user.setPhone(dto.getPhone());
         user.setPassword(dto.getPassword());
         user.setUsername(dto.getUsername());
+        user.setRole(dto.getRole());
         return user;
     }
 
@@ -23,6 +24,7 @@ public class UserMapper {
         dto.setEmail(user.getEmail());
         dto.setPhone(user.getPhone());
         dto.setUsername(user.getUsername());
+        dto.setRole(user.getRole());
         return dto;
     }
 }
