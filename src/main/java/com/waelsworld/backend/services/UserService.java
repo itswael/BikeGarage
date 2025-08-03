@@ -1,5 +1,15 @@
 package com.waelsworld.backend.services;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.waelsworld.backend.dtos.UserRequestDTO;
 import com.waelsworld.backend.dtos.UserResponseDTO;
 import com.waelsworld.backend.errors.userErrors;
@@ -8,16 +18,8 @@ import com.waelsworld.backend.mapper.UserMapper;
 import com.waelsworld.backend.models.User;
 import com.waelsworld.backend.repositories.UserRepository;
 import com.waelsworld.backend.utils.userUtils;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.Optional;
-import java.util.UUID;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -84,8 +86,8 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
