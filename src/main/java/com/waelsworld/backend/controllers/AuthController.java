@@ -2,6 +2,9 @@ package com.waelsworld.backend.controllers;
 
 import com.waelsworld.backend.dtos.AuthRequest;
 import com.waelsworld.backend.dtos.AuthResponse;
+import com.waelsworld.backend.dtos.UserRequestDTO;
+import com.waelsworld.backend.dtos.UserResponseDTO;
+import com.waelsworld.backend.services.UserService;
 import com.waelsworld.backend.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,12 @@ public class AuthController {
     private final AuthenticationManager authManager;
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
+    private final UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO user) {
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
