@@ -1,6 +1,7 @@
 package com.waelsworld.backend.dtos;
 
 import com.waelsworld.backend.models.User;
+import com.waelsworld.backend.models.enums.Role;
 import lombok.Data;
 import java.util.UUID;
 
@@ -11,4 +12,5 @@ public class UserResponseDTO {
     private String email;
     private String phone;
     private String username;
+    private Role role;
 }
