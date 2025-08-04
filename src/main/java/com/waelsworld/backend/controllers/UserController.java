@@ -1,12 +1,8 @@
 package com.waelsworld.backend.controllers;
 
-
-import com.waelsworld.backend.dtos.UserRequestDTO;
-import com.waelsworld.backend.dtos.UserResponseDTO;
 import com.waelsworld.backend.models.User;
 import com.waelsworld.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
