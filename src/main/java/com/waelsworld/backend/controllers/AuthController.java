@@ -1,13 +1,5 @@
 package com.waelsworld.backend.controllers;
 
-import com.waelsworld.backend.dtos.*;
-import com.waelsworld.backend.models.User;
-import com.waelsworld.backend.models.enums.Role;
-import com.waelsworld.backend.repositories.UserRepository;
-import com.waelsworld.backend.services.UserService;
-import com.waelsworld.backend.utils.GoogleTokenVerifier;
-import com.waelsworld.backend.utils.JwtUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,10 +7,28 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.waelsworld.backend.dtos.AuthRequest;
+import com.waelsworld.backend.dtos.AuthResponse;
+import com.waelsworld.backend.dtos.GoogleAuthUrlResponse;
+import com.waelsworld.backend.dtos.GoogleSignInRequest;
+import com.waelsworld.backend.dtos.UserRequestDTO;
+import com.waelsworld.backend.dtos.UserResponseDTO;
+import com.waelsworld.backend.models.User;
+import com.waelsworld.backend.models.enums.Role;
+import com.waelsworld.backend.repositories.UserRepository;
+import com.waelsworld.backend.services.GoogleOAuthService;
+import com.waelsworld.backend.services.UserService;
+import com.waelsworld.backend.utils.GoogleTokenVerifier;
+import com.waelsworld.backend.utils.JwtUtil;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -27,6 +37,7 @@ public class AuthController {
 
     private final AuthenticationManager authManager;
     private final GoogleTokenVerifier googleTokenVerifier;
+    private final GoogleOAuthService googleOAuthService;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
@@ -70,6 +81,7 @@ public class AuthController {
                     User newUser = new User();
                     newUser.setEmail(email);
                     newUser.setName(name);
+                    newUser.setUsername(email); // Use email as username for Google users
                     newUser.setPhone("N/A");
                     newUser.setPassword("N/A"); // no password for Google user
                     newUser.setRole(Role.CUSTOMER);
