@@ -82,5 +82,62 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(jwt));
     }
 
+    /**
+     * Generate Google OAuth authorization URL
+     * GET /api/auth/google/url
+     */
+    @GetMapping("/google/url")
+    public ResponseEntity<?> getGoogleAuthUrl() {
+        try {
+            String authUrl = googleOAuthService.generateAuthUrl();
+            return ResponseEntity.ok(new GoogleAuthUrlResponse(authUrl));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to generate Google auth URL");
+        }
+    }
+
+    /**
+     * Handle Google OAuth callback
+     * GET /api/auth/google/callback?code=...
+     */
+    @GetMapping("/google/callback")
+    public ResponseEntity<?> handleGoogleCallback(@RequestParam("code") String authorizationCode) {
+        try {
+            var tokenResponse = googleOAuthService.exchangeCodeForTokens(authorizationCode);
+            var payload = googleOAuthService.verifyIdToken(tokenResponse.getIdToken());
+
+            if (payload == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Google ID Token");
+            }
+
+            String email = payload.getEmail();
+            String name = (String) payload.get("name");
+
+            // Check if user exists, else create
+            User user = userRepository.findByEmail(email)
+                    .orElseGet(() -> {
+                        User newUser = new User();
+                        newUser.setEmail(email);
+                        newUser.setName(name);
+                        newUser.setUsername(email);
+                        newUser.setPhone("N/A");
+                        newUser.setPassword("N/A");
+                        newUser.setRole(Role.CUSTOMER);
+                        return userRepository.save(newUser);
+                    });
+
+            // Generate your own JWT
+            String jwt = jwtUtil.generateToken(user);
+
+            // Redirect to frontend with JWT (or return JSON based on your needs)
+            return ResponseEntity.ok(new AuthResponse(jwt));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Google authentication failed");
+        }
+    }
+
 }
 
