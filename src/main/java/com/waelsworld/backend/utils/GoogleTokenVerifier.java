@@ -1,13 +1,14 @@
 package com.waelsworld.backend.utils;
 
+import java.util.Collections;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.util.Collections;
 
 @Component
 public class GoogleTokenVerifier {
@@ -18,12 +19,14 @@ public class GoogleTokenVerifier {
         try {
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier
                     .Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance())
-                    .setAudience(Collections.singletonList(GoogleClientId)) // replace with real client ID
+                    .setAudience(Collections.singletonList(GoogleClientId))
                     .build();
 
             GoogleIdToken idToken = verifier.verify(idTokenString);
             return (idToken != null) ? idToken.getPayload() : null;
         } catch (Exception e) {
+            // Log the error for debugging
+            System.err.println("Google token verification failed: " + e.getMessage());
             return null;
         }
     }
