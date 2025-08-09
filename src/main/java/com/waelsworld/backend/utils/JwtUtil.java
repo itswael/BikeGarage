@@ -24,6 +24,7 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        // todo: Add user role to the claims
         return createToken(claims, userDetails.getUsername());
     }
 
