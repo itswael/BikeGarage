@@ -16,6 +16,7 @@ import com.waelsworld.backend.errors.userErrors;
 import com.waelsworld.backend.exceptions.DuplicateResourceException;
 import com.waelsworld.backend.mapper.UserMapper;
 import com.waelsworld.backend.models.User;
+import com.waelsworld.backend.models.enums.Role;
 import com.waelsworld.backend.repositories.UserRepository;
 import com.waelsworld.backend.utils.userUtils;
 
