@@ -1,5 +1,6 @@
 package com.waelsworld.backend.utils;
 
+import com.waelsworld.backend.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,7 +24,9 @@ public class JwtUtil {
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
     public String generateToken(UserDetails userDetails) {
+        User user = (User) userDetails;
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole().name());
         // todo: Add user role to the claims
         return createToken(claims, userDetails.getUsername());
     }
@@ -48,6 +51,10 @@ public class JwtUtil {
 
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
+    }
+
+    public String extractUserRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
     }
 
     public boolean isTokenExpired(String token) {
