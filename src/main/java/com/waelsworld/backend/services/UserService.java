@@ -16,6 +16,7 @@ import com.waelsworld.backend.errors.userErrors;
 import com.waelsworld.backend.exceptions.DuplicateResourceException;
 import com.waelsworld.backend.mapper.UserMapper;
 import com.waelsworld.backend.models.User;
+import com.waelsworld.backend.models.enums.Role;
 import com.waelsworld.backend.repositories.UserRepository;
 import com.waelsworld.backend.utils.userUtils;
 
@@ -47,6 +48,11 @@ public class UserService implements UserDetailsService {
         }
 
         User user = UserMapper.toUser(request);
+
+        // Set default role as CUSTOMER for new registrations
+        if (user.getRole() == null) {
+            user.setRole(Role.CUSTOMER);
+        }
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         User saved = userRepository.save(user);
