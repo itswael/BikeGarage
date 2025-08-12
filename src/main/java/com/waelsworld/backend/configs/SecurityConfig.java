@@ -33,7 +33,33 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> authz
+                        // Public endpoints
                         .requestMatchers("/api/auth/**").permitAll()
+                        
+                        // Test endpoints for role verification
+                        .requestMatchers("/api/test/owner-only").hasRole("OWNER")
+                        .requestMatchers("/api/test/mechanic-access").hasAnyRole("MECHANIC", "OWNER")
+                        .requestMatchers("/api/test/customer-access").hasAnyRole("CUSTOMER", "OWNER")
+                        .requestMatchers("/api/test/authenticated-only").authenticated()
+                        
+                        // Owner-only endpoints
+                        .requestMatchers("/api/admin/**").hasRole("OWNER")
+                        .requestMatchers("/api/service-centres/**").hasRole("OWNER")
+                        .requestMatchers("/api/mechanics/**").hasRole("OWNER")
+                        
+                        // Mechanic endpoints
+                        .requestMatchers("/api/services/**").hasAnyRole("MECHANIC", "OWNER")
+                        .requestMatchers("/api/appointments/mechanic/**").hasAnyRole("MECHANIC", "OWNER")
+                        
+                        // Customer endpoints
+                        .requestMatchers("/api/bookings/**").hasAnyRole("CUSTOMER", "OWNER")
+                        .requestMatchers("/api/vehicles/**").hasAnyRole("CUSTOMER", "OWNER")
+                        .requestMatchers("/api/appointments/customer/**").hasAnyRole("CUSTOMER", "OWNER")
+                        
+                        // Shared endpoints (all authenticated users)
+                        .requestMatchers("/api/profile/**").authenticated()
+                        .requestMatchers("/api/notifications/**").authenticated()
+                        
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
