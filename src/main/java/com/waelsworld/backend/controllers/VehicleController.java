@@ -2,14 +2,14 @@ package com.waelsworld.backend.controllers;
 
 import com.waelsworld.backend.dtos.VehicleRequestDTO;
 import com.waelsworld.backend.dtos.VehicleResponseDTO;
-import com.waelsworld.backend.models.Vehicle;
 import com.waelsworld.backend.services.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController("/api/vehicles")
@@ -24,4 +24,12 @@ public class VehicleController {
     public ResponseEntity<VehicleResponseDTO> addVehicle(@RequestBody VehicleRequestDTO vehicle) {
         return new ResponseEntity<>(vehicleService.createVehicle(vehicle), HttpStatus.CREATED);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<VehicleResponseDTO>> getAllVehicles(@RequestParam UUID id) {
+        List<VehicleResponseDTO> vehicles = vehicleService.getVehicles(id);
+        return ResponseEntity.ok(vehicles);
+    }
+
+
 }
