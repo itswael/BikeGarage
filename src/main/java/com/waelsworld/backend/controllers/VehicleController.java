@@ -26,10 +26,12 @@ public class VehicleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<VehicleResponseDTO>> getAllVehicles(@RequestParam UUID id) {
-        List<VehicleResponseDTO> vehicles = vehicleService.getVehicles(id);
+    public ResponseEntity<List<VehicleResponseDTO>> getAllVehicles(@PathVariable UUID id) {
+        List<VehicleResponseDTO> vehicles = vehicleService.getUserVehicles(id);
         return ResponseEntity.ok(vehicles);
     }
+
+    // TODO: Add update and delete endpoints
 
 
 }
