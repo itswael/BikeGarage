@@ -8,6 +8,10 @@ import com.waelsworld.backend.repositories.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Service
 public class VehicleService {
@@ -16,5 +20,14 @@ public class VehicleService {
         Vehicle vehicle = VehicleMapper.toVehicle(vehicleDto);
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
         return VehicleMapper.from(savedVehicle);
+    }
+
+    public List<VehicleResponseDTO> getUserVehicles(UUID userId) {
+        Optional<List<Vehicle>> vehicles = vehicleRepository.findAllByUserId(userId);
+        return vehicles
+                .map(vehicleList -> vehicleList.stream()
+                        .map(VehicleMapper::from)
+                        .toList())
+                .orElseThrow(() -> new RuntimeException("No vehicles found for user with ID: " + userId));
     }
 }
