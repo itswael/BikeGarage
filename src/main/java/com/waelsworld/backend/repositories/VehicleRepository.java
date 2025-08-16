@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class VehicleRepository extends JpaRepository<Vehicle, UUID> {
+public interface VehicleRepository extends JpaRepository<Vehicle, UUID> {
     /**
      * Repository for Vehicle entity
      * Provides methods to interact with the database
