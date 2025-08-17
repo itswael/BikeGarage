@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ public class VehicleRequestDTO {
     private int make;
     private String registrationNumber;
     private VehicleType type;
-    private User user;
+    private UUID userId;
     private List<Service> services;
     private LocalDateTime lastServiceDate;
 }
