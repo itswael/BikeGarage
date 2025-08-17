@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@RestController("/api/vehicles")
+@RestController
+@RequestMapping("/api/vehicles")
 public class VehicleController {
     /**
      * Vehicle endpoints (protected by SecurityConfig)
