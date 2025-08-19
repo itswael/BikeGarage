@@ -2,16 +2,17 @@ package com.waelsworld.backend.mapper;
 
 import com.waelsworld.backend.dtos.VehicleRequestDTO;
 import com.waelsworld.backend.dtos.VehicleResponseDTO;
+import com.waelsworld.backend.models.User;
 import com.waelsworld.backend.models.Vehicle;
 
 public class VehicleMapper {
-    public static Vehicle toVehicle(VehicleRequestDTO dto) {
+    public static Vehicle toVehicle(VehicleRequestDTO dto, User user) {
         Vehicle vehicle = new Vehicle();
         vehicle.setMake(dto.getMake());
         vehicle.setName(dto.getName());
         vehicle.setRegistrationNumber(dto.getRegistrationNumber());
         vehicle.setType(dto.getType());
-        vehicle.setUser(dto.getUser());
+        vehicle.setUser(user);
         vehicle.setServices(dto.getServices());
         vehicle.setLastServiceDate(dto.getLastServiceDate());
         return vehicle;
@@ -24,7 +25,7 @@ public class VehicleMapper {
         dto.setMake(vehicle.getMake());
         dto.setRegistrationNumber(vehicle.getRegistrationNumber());
         dto.setType(vehicle.getType());
-        dto.setUser(vehicle.getUser());
+        dto.setUserId(vehicle.getUser().getId());
         dto.setServices(vehicle.getServices());
         dto.setLastServiceDate(vehicle.getLastServiceDate());
         return dto;
