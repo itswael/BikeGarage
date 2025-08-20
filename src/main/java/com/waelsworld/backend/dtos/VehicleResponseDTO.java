@@ -1,7 +1,6 @@
 package com.waelsworld.backend.dtos;
 
 import com.waelsworld.backend.models.Service;
-import com.waelsworld.backend.models.User;
 import com.waelsworld.backend.models.enums.VehicleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
