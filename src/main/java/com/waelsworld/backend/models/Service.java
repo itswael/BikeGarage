@@ -17,23 +17,23 @@ import java.util.List;
 @Setter
 public class Service extends BaseEntity {
     @CreatedDate
-    LocalDateTime serviceDate;
+    private LocalDateTime serviceDate;
 
     @Enumerated(EnumType.STRING)
-    ServiceStatus status;
+    private ServiceStatus status;
 
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<WorkLog> workLogs;
+    private List<WorkLog> workLogs;
 
     @OneToOne(mappedBy = "service", cascade = CascadeType.ALL)
-    Invoice invoice;
+    private Invoice invoice;
 
-    UUID customerId;
+    private UUID customerId;
 
-    UUID mechanicId;
+    private UUID mechanicId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vehicle_id", nullable = false)
-    Vehicle vehicle;  // Link to the vehicle being serviced
+    private Vehicle vehicle;  // Link to the vehicle being serviced
 
 }
