@@ -15,6 +15,14 @@ import java.util.UUID;
 public class ServiceController {
     private final ServiceRecService serviceRecService;
 
+    /* TODO: create service endpoints
+         - Get services by vehicle ID
+         - calculate next service date based on last service and mileage
+         - Add service record
+         - Update service record
+         - Delete service record
+     */
+
     @GetMapping("/{id")
     public String getServiceByVehicleId(@RequestParam UUID vehicleId) {
         return "Service details";
