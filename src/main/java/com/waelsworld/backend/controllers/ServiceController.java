@@ -1,5 +1,6 @@
 package com.waelsworld.backend.controllers;
 
+import com.waelsworld.backend.dtos.ServiceRequestDTO;
 import com.waelsworld.backend.services.ServiceRecService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class ServiceController {
         return "Service details";
     }
 
-    @PostMapping("/{id}")
-    public String addServiceRecord(@RequestParam UUID id) {
+    @PostMapping("/create")
+    public String addServiceRecord(@RequestBody ServiceRequestDTO serviceRequestDTO) {
         return "Add service record";
     }
 }
