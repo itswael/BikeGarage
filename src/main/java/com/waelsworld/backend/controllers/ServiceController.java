@@ -2,10 +2,7 @@ package com.waelsworld.backend.controllers;
 
 import com.waelsworld.backend.services.ServiceRecService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -23,8 +20,13 @@ public class ServiceController {
          - Delete service record
      */
 
-    @GetMapping("/{id")
-    public String getServiceByVehicleId(@RequestParam UUID vehicleId) {
+    @GetMapping("/{id}")
+    public String getServiceByVehicleId(@RequestParam UUID id) {
         return "Service details";
+    }
+
+    @PostMapping("/{id}")
+    public String addServiceRecord(@RequestParam UUID id) {
+        return "Add service record";
     }
 }
