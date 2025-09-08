@@ -15,17 +15,17 @@ import java.util.List;
 @Table(name = "services")
 @Getter
 @Setter
-public class Service extends BaseEntity {
+public class ServiceRec extends BaseEntity {
     @CreatedDate
     private LocalDateTime serviceDate;
 
     @Enumerated(EnumType.STRING)
     private ServiceStatus status;
 
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "serviceRec", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkLog> workLogs;
 
-    @OneToOne(mappedBy = "service", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "serviceRec", cascade = CascadeType.ALL)
     private Invoice invoice;
 
     private UUID customerId;
@@ -35,5 +35,8 @@ public class Service extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;  // Link to the vehicle being serviced
+
+    @ManyToOne(optional = false)
+    private ServiceCentre serviceCentre;  // Link to the serviceRec center where the serviceRec is performed
 
 }
