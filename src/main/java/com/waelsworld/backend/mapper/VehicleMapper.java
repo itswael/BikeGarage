@@ -13,7 +13,7 @@ public class VehicleMapper {
         vehicle.setRegistrationNumber(dto.getRegistrationNumber());
         vehicle.setType(dto.getType());
         vehicle.setUser(user);
-        vehicle.setServices(dto.getServices());
+        vehicle.setServiceRecs(dto.getServiceRecs());
         vehicle.setLastServiceDate(dto.getLastServiceDate());
         return vehicle;
     }
@@ -26,7 +26,7 @@ public class VehicleMapper {
         dto.setRegistrationNumber(vehicle.getRegistrationNumber());
         dto.setType(vehicle.getType());
         dto.setUserId(vehicle.getUser().getId());
-        dto.setServices(vehicle.getServices());
+        dto.setServiceRecs(vehicle.getServiceRecs());
         dto.setLastServiceDate(vehicle.getLastServiceDate());
         return dto;
     }
