@@ -1,6 +1,6 @@
 package com.waelsworld.backend.dtos;
 
-import com.waelsworld.backend.models.Service;
+import com.waelsworld.backend.models.ServiceRec;
 import com.waelsworld.backend.models.enums.VehicleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +22,6 @@ public class VehicleResponseDTO {
     private String registrationNumber;
     private VehicleType type;
     private UUID userId;
-    private List<Service> services;
+    private List<ServiceRec> serviceRecs;
     private LocalDateTime lastServiceDate;
 }

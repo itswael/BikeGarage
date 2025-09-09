@@ -36,7 +36,7 @@ public class Vehicle extends BaseEntity {
     private User user;  // Link to the owner/customer
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Service> services;
+    private List<ServiceRec> serviceRecs;
 
     @Column(name = "last_service_date")
     private LocalDateTime lastServiceDate;

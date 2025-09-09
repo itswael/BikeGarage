@@ -37,5 +37,5 @@ public class Invoice extends BaseEntity{
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
-    Service service;
+    ServiceRec serviceRec;
 }
