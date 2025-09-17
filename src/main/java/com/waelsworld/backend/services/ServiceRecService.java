@@ -2,6 +2,7 @@ package com.waelsworld.backend.services;
 
 import com.waelsworld.backend.dtos.ServiceRequestDTO;
 import com.waelsworld.backend.dtos.ServiceResponseDTO;
+import com.waelsworld.backend.mapper.ServiceMapper;
 import com.waelsworld.backend.models.ServiceRec;
 import com.waelsworld.backend.repositories.ServiceRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class ServiceRecService {
         ServiceRec service = new ServiceRec();
         // Logic to set service properties from serviceRequestDTO
         service = serviceRepository.save(service);
-        return null;
+        return ServiceMapper.to(service);
     }
 
 

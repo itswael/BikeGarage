@@ -1,8 +1,10 @@
 package com.waelsworld.backend.controllers;
 
 import com.waelsworld.backend.dtos.ServiceRequestDTO;
+import com.waelsworld.backend.dtos.ServiceResponseDTO;
 import com.waelsworld.backend.services.ServiceRecService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -27,7 +29,8 @@ public class ServiceController {
     }
 
     @PostMapping("/create")
-    public String addServiceRecord(@RequestBody ServiceRequestDTO serviceRequestDTO) {
-        return "Add service record";
+    public ResponseEntity<ServiceResponseDTO> addServiceRecord(@RequestBody ServiceRequestDTO serviceRequestDTO) {
+        ServiceResponseDTO serviceResponseDTO = serviceRecService.createService(serviceRequestDTO);
+        return ResponseEntity.ok(serviceResponseDTO);
     }
 }
