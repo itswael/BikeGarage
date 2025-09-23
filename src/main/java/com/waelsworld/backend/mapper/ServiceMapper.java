@@ -1,6 +1,5 @@
 package com.waelsworld.backend.mapper;
 
-import com.waelsworld.backend.dtos.ServiceRequestDTO;
 import com.waelsworld.backend.dtos.ServiceResponseDTO;
 import com.waelsworld.backend.models.ServiceRec;
 import com.waelsworld.backend.models.Vehicle;
