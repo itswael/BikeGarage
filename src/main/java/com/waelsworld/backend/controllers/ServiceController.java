@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -24,8 +25,10 @@ public class ServiceController {
      */
 
     @GetMapping("/{id}")
-    public String getServiceByVehicleId(@RequestParam UUID id) {
-        return "Service details";
+    public ResponseEntity<List<ServiceResponseDTO>> getServiceByVehicleId(@RequestParam UUID id) {
+        // Placeholder implementation
+        List<ServiceResponseDTO> services = serviceRecService.getService(id);
+        return ResponseEntity.ok(services);
     }
 
     @PostMapping("/create")
