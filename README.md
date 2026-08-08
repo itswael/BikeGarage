@@ -1,114 +1,58 @@
-# 🚴‍♂️ BikeGarage
+# BikeGarage
 
-BikeGarage is an Android-based application designed for **bike service center owners** to efficiently manage their services, customers, and billing operations. This system simplifies tracking service records, issuing invoices, and maintaining customer data—reducing paperwork and enhancing productivity.
+BikeGarage is the Spring Boot backend for a bike service center management platform. It gives service center owners a REST API to manage mechanics, customers, vehicles, and service records, with JWT-based authentication and Google Sign-In support. It is designed to be paired with a mobile client (see the companion [bikeBuilders](https://github.com/itswael/bikeBuilders) Android app).
 
----
+## Tech Stack
 
-## 🔧 Tech Stack
+- **Java 17** / **Spring Boot 3.5**
+- **Spring Data JPA** with **MySQL** (via `mysql-connector-j`)
+- **Flyway** for database migrations
+- **Spring Security** with **BCrypt** password hashing and stateless **JWT** authentication (`jjwt`)
+- **Google Sign-In / OAuth 2.0** (`google-api-client`) for social login
+- **Lombok**
+- **Maven** (with the Maven Wrapper)
 
-### 🖥️ Backend
-- **Spring Boot** (Java)
-- **Spring Data JPA**
-- **Spring Security** with **BCrypt**
-- **REST APIs**
-- **Firebase Authentication** (Google Sign-In)
-- **Firebase Realtime Database / Firestore** (cloud-based storage)
+## Features
 
-### 📱 Android App
-- **Java (Android SDK)**
-- **Google Sign-In**
-- **Multilingual Support:** English, Hindi
-- **Currency Support:** INR
+- **Authentication** — username/password login, user registration, and Google Sign-In (including a full OAuth authorization-code flow), all issuing a signed JWT
+- **Role-based access control** — distinct `OWNER`, `MECHANIC`, and `CUSTOMER` roles with endpoint-level authorization rules (`SecurityConfig`)
+- **User management** — CRUD operations on user accounts and profiles
+- **Vehicle management** — register and manage customer vehicles
+- **Service tracking** — create and query service records for a vehicle, including work logs and invoicing entities
+- **Centralized error handling** — custom exceptions (`ResourceNotFoundException`, `DuplicateResourceException`, `UnauthorizedActionException`, etc.) mapped through a global exception handler
 
----
+## Architecture
 
-## 📦 Features
+Layered MVC structure: `controllers` → `services` → `repositories`, with `dtos` for API contracts and `mapper` classes to convert between entities and DTOs. Domain models (`User`, `Vehicle`, `ServiceRec`, `ServiceCentre`, `Invoice`, `WorkLog`) live under `models`, with supporting enums for roles and statuses.
 
-- 🔐 **Authentication**
-    - Secure sign-in with Google
-    - Firebase-based session management
+Design documents (HLD, LLD, SQL schema, SRS) are available in the [`documentation`](./documentation) folder.
 
-- 👥 **Customer Management**
-    - Add, update, and delete customer profiles
-    - View customer service history
+## Getting Started
 
-- 🛠️ **Service Tracking**
-    - Manage bike service records
-    - Add details like parts replaced, labor cost, and next due date
-
-- 💰 **Billing**
-    - Auto-generate bills/invoices in INR
-    - Store billing records for reference
-
-- 🌐 **Multilingual Interface**
-    - English (default) and Hindi (optional)
-
----
-
-## 🧱 Architecture
-
-- MVC-based layered backend (Controller → Service → Repository)
-- DTO pattern for clean API contracts
-- Firebase handles authentication and NoSQL data storage
-- Android app communicates via REST APIs
-
----
-
-## 🔒 Security
-
-- **BCrypt** for password encryption (for admin-level internal credentials if needed)
-- **Role-based access control** (to restrict different user actions)
-- **Google Sign-In** using Firebase Authentication
-
----
-
-## 🚀 Getting Started
-
-### Backend (Spring Boot)
+Prerequisites: JDK 17 and a running MySQL instance.
 
 ```bash
-# Clone the repo
-git clone https://github.com/your-username/bikegarage.git
-cd bikegarage/backend
+git clone https://github.com/itswael/BikeGarage.git
+cd BikeGarage
 
-# Build the project
+# configure src/main/resources/application.properties with your own
+# database URL/credentials and JWT secret before running
+
 ./mvnw clean install
-
-# Run the server
 ./mvnw spring-boot:run
 ```
 
-### Android App
-- Open the Android project in Android Studio
+The API is served under `/api` (e.g. `/api/auth/login`, `/api/auth/google`, `/api/services/**`, `/api/vehicles/**`).
 
-- Configure Firebase project and connect it
+> **Note:** `application.properties` in this repository is a local development file. Replace the database credentials and `jwt.secret` with your own values rather than reusing the committed ones.
 
-- Replace google-services.json with your Firebase config
+## Contributing
 
-- Run the app on a real device or emulator
-
-```bash
-bikegarage/
-│
-├── backend/           # Spring Boot backend (REST APIs, Auth)
-├── android-app/       # Android client app (UI + logic)
-└── README.md
-```
-
-## 👨‍💻 Contributing
 - Fork the repository
-- Create a new branch: feature/your-feature-name
+- Create a feature branch
 - Commit your changes
-- Push and create a pull request
+- Open a pull request
 
-## 📄 License
-This project is licensed under the **Wael Non-Commercial Attribution License (WNCA)**.
+## License
 
-You're free to use, modify, and share this project **for non-commercial purposes**, as long as:
-- **Credit is given** to the original author, *Mohammad Wael*.
-- A copy of the license is included with any substantial portion of this work.
-- You do **not** use it for monetary gain without written permission.
-
-See the [LICENSE](./LICENSE) file for full terms.
-
-[![License: WNCA](https://img.shields.io/badge/license-WNCA-blue.svg)](./LICENSE)
+This project is licensed under the Wael Non-Commercial Attribution License (WNCA) — free to use, modify, and share for non-commercial purposes with attribution. See [LICENSE](./LICENSE) for full terms.
