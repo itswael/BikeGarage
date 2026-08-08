@@ -35,8 +35,10 @@ Prerequisites: JDK 17 and a running MySQL instance.
 git clone https://github.com/itswael/BikeGarage.git
 cd BikeGarage
 
-# configure src/main/resources/application.properties with your own
-# database URL/credentials and JWT secret before running
+export DB_URL="jdbc:mysql://localhost:3306/bikegarage"
+export DB_USERNAME="root"
+export DB_PASSWORD="your-mysql-password"
+export JWT_SECRET="your-own-random-secret"
 
 ./mvnw clean install
 ./mvnw spring-boot:run
@@ -44,7 +46,7 @@ cd BikeGarage
 
 The API is served under `/api` (e.g. `/api/auth/login`, `/api/auth/google`, `/api/services/**`, `/api/vehicles/**`).
 
-> **Note:** `application.properties` in this repository is a local development file. Replace the database credentials and `jwt.secret` with your own values rather than reusing the committed ones.
+> **Note:** database credentials and the JWT secret are read from environment variables (`DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `JWT_SECRET`) — nothing sensitive is committed in `application.properties`.
 
 ## Contributing
 
